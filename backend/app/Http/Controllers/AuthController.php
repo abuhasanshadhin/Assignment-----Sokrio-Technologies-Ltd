@@ -20,10 +20,13 @@ class AuthController extends Controller
 
     protected function respondWithToken($token)
     {
+        $user = $this->guard()->user()->select('name', 'email', 'role')->first();
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'user' => $user,
         ]);
     }
 
