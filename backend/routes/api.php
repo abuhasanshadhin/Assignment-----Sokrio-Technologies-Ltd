@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BranchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BranchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/branches', [BranchController::class, 'addBranch']);
     Route::put('/branches/{id}', [BranchController::class, 'updateBranch']);
     Route::delete('/branches/{id}', [BranchController::class, 'deleteBranch']);
+
+    Route::get('/users', [UserController::class, 'getUsers']);
+    Route::post('/users', [UserController::class, 'addUser']);
+    Route::put('/users/{id}', [UserController::class, 'updateUser']);
+    Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 });
