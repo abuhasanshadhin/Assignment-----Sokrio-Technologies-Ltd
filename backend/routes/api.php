@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BranchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +18,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('api')->group(function () {
+Route::middleware('auth:api')->group(function () {
 
     Route::get('/logout', [AuthController::class, 'logout']);
-    
+
+    Route::get('/branches', [BranchController::class, 'getBranches']);
+    Route::post('/branches', [BranchController::class, 'addBranch']);
+    Route::put('/branches/{id}', [BranchController::class, 'updateBranch']);
+    Route::delete('/branches/{id}', [BranchController::class, 'deleteBranch']);
 });
