@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     protected function respondWithToken($token)
     {
-        $user = $this->guard()->user()->select('name', 'email', 'role')->first();
+        $user = $this->guard()->user();
 
         return response()->json([
             'access_token' => $token,
