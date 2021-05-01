@@ -11,4 +11,16 @@ class Branch extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['name', 'address'];
+
+    protected $appends = ['total_users'];
+
+    public function getTotalUsersAttribute()
+    {
+        return $this->users()->count();
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
