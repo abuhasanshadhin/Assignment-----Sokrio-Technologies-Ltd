@@ -21,6 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
 
+    Route::get('/check-auth', [AuthController::class, 'checkAuth']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::get('/branches', [BranchController::class, 'getBranches']);

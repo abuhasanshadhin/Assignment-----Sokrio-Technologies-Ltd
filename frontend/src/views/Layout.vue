@@ -11,7 +11,7 @@
                 <strong>
                     {{ $store.getters["auth/user"]?.branch?.name }} Branch
                 </strong>
-                | {{ $store.getters["auth/user"].name }} |
+                | {{ $store.getters["auth/user"]?.name }} |
                 <a href="#" @click.prevent="logout">Logout</a>
             </div>
             <router-view />
@@ -23,13 +23,19 @@
 export default {
     name: "Layout",
 
+    async created() {
+        let isAuthenticated = await this.$store.dispatch("auth/checkAuth");
+
+        if (!isAuthenticated) {
+            localStorage.setItem("access_token", "");
+            this.$router.push("/");
+        }
+    },
+
     methods: {
         logout() {
             this.$store.dispatch("auth/logout");
-
             localStorage.setItem("access_token", "");
-            localStorage.setItem("c_user", "");
-
             this.$router.push("/");
         },
     },

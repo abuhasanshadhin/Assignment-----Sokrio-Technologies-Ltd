@@ -6,12 +6,7 @@ export default {
     }),
 
     getters: {
-        user: (state) => {
-            let user = localStorage.getItem('c_user');
-            if (user) return JSON.parse(user);
-
-            return state.user;
-        }
+        user: state => state.user
     },
 
     mutations: {
@@ -29,12 +24,25 @@ export default {
                     localStorage.setItem('access_token', token);
                     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                     ctx.commit('setUser', res.data.user);
-                    localStorage.setItem('c_user', JSON.stringify(res.data.user));
                 }).catch((err) => {
                     window.toast('error', err.response.data.message);
                 });
 
             return isSuccess;
+        },
+
+        async checkAuth(ctx) {
+            let isAuthenticated = false;
+
+            await window.axios.get('/check-auth')
+                .then(res => {
+                    isAuthenticated = true;
+                    ctx.commit('setUser', res.data.user);
+                }).catch(err => {
+                    window.toast('error', err.response.data.message);
+                });
+
+            return isAuthenticated;
         },
 
         logout() {

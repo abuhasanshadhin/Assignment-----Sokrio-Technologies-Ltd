@@ -31,6 +31,12 @@ class AuthController extends Controller
         ]);
     }
 
+    public function checkAuth()
+    {
+        $user = User::with('branch')->find($this->guard()->user()->id);
+        return response()->json(['user' => $user]);
+    }
+
     public function logout()
     {
         $this->guard()->logout();
