@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use App\Http\Controllers\BranchController;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -32,4 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/users', [UserController::class, 'addUser']);
     Route::put('/users/{id}', [UserController::class, 'updateUser']);
     Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
+
+    Route::get('/attendance/receive', [AttendanceController::class, 'receiveAttendance']);
+    Route::get('/will-check-in', [AttendanceController::class, 'willCheckIn']);
 });
