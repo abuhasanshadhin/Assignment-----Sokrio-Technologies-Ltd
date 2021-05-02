@@ -29,6 +29,20 @@ class UserRepository
         $res = new stdClass;
 
         try {
+
+            if ($data['role'] == 'manager') {
+
+                $manager = User::where('branch_id', $data['branch_id'])
+                    ->where('role', 'manager')
+                    ->first();
+
+                if ($manager) {
+                    $res->message = 'Manager already exists for this branch';
+                    $res->code = 409;
+                    return $res;
+                }
+            }
+
             $user = new User();
             $data['password'] = bcrypt($data['password']);
             $user->create($data);
@@ -48,6 +62,21 @@ class UserRepository
         $res = new stdClass;
 
         try {
+
+            if ($data['role'] == 'manager') {
+                
+                $manager = User::where('branch_id', $data['branch_id'])
+                    ->where('role', 'manager')
+                    ->where('id', '!=', $id)
+                    ->first();
+
+                if ($manager) {
+                    $res->message = 'Manager already exists for this branch';
+                    $res->code = 409;
+                    return $res;
+                }
+            }
+
             $user = $this->getById($id);
 
             if (!empty($data['password'])) {

@@ -23,6 +23,14 @@ class BranchRepository
         $res = new stdClass;
 
         try {
+            $exists = Branch::where('name', $data['name'])->first();
+
+            if ($exists) {
+                $res->message = "{$data['name']} branch already exists";
+                $res->code = 409;
+                return $res;
+            }
+
             $branch = new Branch();
             $branch->create($data);
 
@@ -41,6 +49,16 @@ class BranchRepository
         $res = new stdClass;
 
         try {
+            $exists = Branch::where('name', $data['name'])
+                ->where('id', '!=', $id)
+                ->first();
+
+            if ($exists) {
+                $res->message = "{$data['name']} branch already exists";
+                $res->code = 409;
+                return $res;
+            }
+
             $branch = $this->getById($id);
             $branch->update($data);
 
