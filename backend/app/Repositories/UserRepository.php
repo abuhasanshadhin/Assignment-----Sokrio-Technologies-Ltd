@@ -49,7 +49,11 @@ class UserRepository
 
         try {
             $user = $this->getById($id);
-            $data['password'] = bcrypt($data['password']);
+
+            if (!empty($data['password'])) {
+                $data['password'] = bcrypt($data['password']);
+            }
+
             $user->update($data);
 
             $res->message = 'Employee updated successfully';
