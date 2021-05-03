@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Attendance;
+use App\Notifications\EmployeeChecksNotificationForManager;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
@@ -27,15 +28,23 @@ class AttendanceRepository
                     ->latest()
                     ->first();
 
+                $manager = Auth::user()->branch->users()->where('role', 'manager')->first();
+
                 if ($lastAttendance && $lastAttendance->check_out == null) {
+                    $dateTime = date('Y-m-d H:i:s');
                     $lastAttendance->update(['check_out' => date('Y-m-d H:i:s')]);
                     $status = 'Checked Out';
+
+                    $manager->notify(new EmployeeChecksNotificationForManager('out', $dateTime, Auth::user()));
+
                 } else {
                     $attendance = new Attendance();
                     $data['employee_id'] = Auth::user()->id;
                     $data['check_in'] = date('Y-m-d H:i:s');
                     $attendance->create($data);
                     $status = 'Checked In';
+
+                    $manager->notify(new EmployeeChecksNotificationForManager('in', $data['check_in'], Auth::user()));
                 }
 
                 $res->message = "You are successfully {$status}";

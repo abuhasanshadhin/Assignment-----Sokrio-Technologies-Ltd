@@ -2,9 +2,7 @@
     <div class="">
         <div class="login-wrapper col-md-4">
             <div class="card">
-                <div class="card-header">
-                    Login to Your Account
-                </div>
+                <div class="card-header">Login to Your Account</div>
                 <div class="card-body">
                     <form @submit.prevent="handleLogin">
                         <div class="mb-2">
@@ -74,7 +72,14 @@ export default {
                 let res = await this.$store.dispatch("auth/login", this.user);
                 if (res) {
                     this.resetForm();
-                    this.$router.push("/dashboard");
+
+                    let user = this.$store.getters["auth/user"];
+
+                    if (user && user.role == "employee") {
+                        this.$router.push("/attendance");
+                    } else {
+                        this.$router.push("/dashboard");
+                    }
                 }
 
                 this.loading = false;
