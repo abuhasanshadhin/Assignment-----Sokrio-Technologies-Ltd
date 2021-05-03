@@ -235,7 +235,12 @@ export default {
 
             let res = await this.$store.dispatch(action, user);
 
-            if (res) this.resetForm();
+            if (res) {
+                this.resetForm();
+                this.$store.dispatch("user/getUsers", {
+                    branch_id: this.selectedBranch,
+                });
+            }
 
             this.loading = false;
         },
@@ -245,9 +250,14 @@ export default {
             Object.keys(this.user).forEach((k) => (this.user[k] = user[k]));
         },
 
-        deleteUser(id) {
+        async deleteUser(id) {
             if (!confirm("Are you sure?")) return;
-            this.$store.dispatch("user/deleteUser", id);
+            let res = await this.$store.dispatch("user/deleteUser", id);
+            if (res) {
+                this.$store.dispatch("user/getUsers", {
+                    branch_id: this.selectedBranch,
+                });
+            }
         },
 
         resetForm() {

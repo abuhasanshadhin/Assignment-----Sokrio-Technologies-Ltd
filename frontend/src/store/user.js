@@ -49,7 +49,6 @@ export default {
                 .then(res => {
                     isSuccess = true;
                     window.toast('success', res.data.message);
-                    ctx.dispatch('getUsers', { branch_id: user.branch_id });
                 }).catch(err => {
                     window.toast('error', err.response.data.message);
                 });
