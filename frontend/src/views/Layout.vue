@@ -5,7 +5,6 @@
                 <router-link to="/dashboard">Home</router-link>
                 <router-link to="/branch">Branches</router-link>
                 <router-link to="/employee">Employees</router-link>
-                <router-link to="/">Attendences</router-link>
             </div>
             <div class="text-center my-3">
                 <strong>
