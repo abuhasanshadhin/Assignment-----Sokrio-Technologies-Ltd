@@ -60,4 +60,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'employee_id', 'id');
+    }
+
+    public function todaysAttendances()
+    {
+        return $this->hasMany(Attendance::class, 'employee_id', 'id')->whereDate('check_in', date('Y-m-d'));
+    }
 }
